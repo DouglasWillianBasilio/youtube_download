@@ -1,14 +1,22 @@
-import youtube_dl
+from pytube import YouTube
 
-# URL do vídeo no YouTube
-video_url = 'https://www.youtube.com/watch?v=CUxB51YGhyI'
+def download_video(video_url, output_path):
+    try:
+        # Cria uma instância do objeto YouTube com a URL do vídeo
+        video = YouTube(video_url)
 
-# Opções de download
-ydl_opts = {
-    'format': 'bestvideo[height<=2160]+bestaudio/best[height<=2160]',
-    'outtmpl': 'video.mp4',
-}
+        # Seleciona a maior resolução disponível
+        stream = video.streams.get_highest_resolution()
 
-# Iniciar o download
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download([video_url])
+        # Inicia o download do vídeo
+        stream.download(output_path)
+
+        print("Download concluído com sucesso!")
+    except Exception as e:
+        print(f"Ocorreu um erro durante o download: {str(e)}")
+
+# Exemplo de uso
+video_url = "https://www.youtube.com/watch?v=gXuzkwRivfg"
+output_folder = "C:/Users/xboxl/Desktop/video"
+
+download_video(video_url, output_folder)
